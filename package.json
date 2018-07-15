@@ -19,6 +19,7 @@
   "dependencies": {
     "inquirer": "^6.0.0",
     "mysql": "^2.15.0",
-    "parse": "^1.11.1"
+    "parse": "^1.11.1",
+    "request": "^2.87.0"
   }
 }

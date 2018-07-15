@@ -1,5 +1,5 @@
 var mysql = require("mysql");
-// var inquirer =require("inquirer");
+var inquirer =require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -36,7 +36,7 @@ function promptCustomerForItem(inventory){
            {
                name: "choice",
                type: "input",
-               message: "please enter the id for an item you would like to purchase.",
+               message: "please enter the item_id for product you would like to purchase.",
                
                validate: function(val){
                    return !isNaN(val);
@@ -69,43 +69,64 @@ function promptCustomerForQuantity(products){
                type:"input",
                message:"How many would like to purchase?",
                validate: function(val){
-               return(val > 0)
+               return val > 0;
                }
            }
        ])
     .then(function(val) {
         var quantity = parseInt(val.quantity);
 
-        if(quantity > prodocts.stock_quantity){
+        if(quantity > products.stock_quantity){
             console.log("quantity exceeds available inventory");
             loadProducts();
-        } else {
-            makePurchase(products,quantity);
+         } else {
+            checkInventory(products);
         }
 
+
+function checkInventory(choiceId, inventory) {
+    for (var i = 0; i < inventory.length; i++) {
+         if (inventory[i].item_id === choiceId) {
+            return inventory[i];
+        }
+    }
+            return null;
+        }
     });
-}
+
+            makePurchase(products , quantity)
+    };
+    
+
+
 
 function makePurchase(products,quantity){
     connection.query(
-       "UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?",
-        [quantity, products.id],
+       "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
+        [quantity, products.item_id],
     function (err, res) {
         console.log("\nSuccessfully purchased " + quantity + " " + products.product_name + "'s!");
             loadProducts();
         }
     );
+    
+
 }
 
-function checkInventory(choiceId ,inventory) {
-    for(var i = 0; i > inventory.length; i++) {
-        if(inventory[i].id ===choiceId) {
-            return inventory[i];
-        } else {
-            return null;
-        }
-    }
-}
+
+    
+
+//     function checkIfShouldExit(choice) {
+//         if (choice.toLowerCase() === "q") {
+//             // Log a message and exit the current node process
+//             console.log("Goodbye!");
+//             process.exit(0);
+//         }
+//     }
+// }
+
+
+
 
 
 
