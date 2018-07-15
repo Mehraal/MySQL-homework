@@ -114,18 +114,6 @@ function makePurchase(products,quantity){
 }
 
 
-    
-
-//     function checkIfShouldExit(choice) {
-//         if (choice.toLowerCase() === "q") {
-//             // Log a message and exit the current node process
-//             console.log("Goodbye!");
-//             process.exit(0);
-//         }
-//     }
-// }
-
-
 
 
 
